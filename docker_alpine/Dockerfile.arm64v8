@@ -1,0 +1,20 @@
+FROM arm64v8/alpine:edge@sha256:cfd04e2c9bfed5d883b14329da780888a6a4d1cbc421a0fb1ad076d81bff1d0e
+
+LABEL maintainer="Hackxiu <hackxiu@gmail.com>" \
+  org.label-schema.name="Alpine" \
+  org.label-schema.version="latest" \
+  org.label-schema.vendor="Hackxiu" \
+  org.label-schema.schema-version="1.0"
+
+ENV CRON_ENABLED false
+ENV TERM xterm
+
+ENTRYPOINT ["/usr/bin/entrypoint"]
+CMD ["bash"]
+
+COPY ./overlay ./overlay-arm64v8 /
+
+RUN apk update && \
+  apk upgrade -a || apk fix && \
+  apk add ca-certificates curl bash bash-completion ncurses vim tar rsync shadow su-exec s6 && \
+  rm -rf /var/cache/apk/*
