@@ -1,6 +1,6 @@
 ###################################
 #Build stage
-FROM golang:1.14-alpine3.11 AS build-env
+FROM arm64v8/golang:1.14-alpine3.11 AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
@@ -20,7 +20,7 @@ WORKDIR ${GOPATH}/src/gitea
 #Checkout version if set
 RUN make clean-all build
 
-FROM alpine:3.11
+FROM arm64v8/alpine:3.11
 LABEL maintainer="hackxiu@gmail.com"
 
 EXPOSE 22 3000
