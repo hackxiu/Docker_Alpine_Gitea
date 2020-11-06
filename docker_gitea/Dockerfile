@@ -1,7 +1,7 @@
 
 ###################################
 #Build stage
-FROM golang:1.14-alpine3.11@sha256:63bd8a316cba8c404cc2e32a5120406c24aee8db3224c469a6077b941d900863 AS build-env
+FROM golang:1.14-alpine3.11@sha256:85ae77bc1e43353ff14e6fe1658be1ed4ecbf4330212ac3d7ab7462add32dd39 AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
