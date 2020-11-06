@@ -1,7 +1,6 @@
-
 ###################################
 #Build stage
-FROM golang:1.14-alpine3.11@sha256:b702d0d898bdd5c15968ae95301c6634948307a0bb5ed6a402283ff7fb95b784 AS build-env
+FROM golang:1.14-alpine3.11 AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
@@ -22,7 +21,7 @@ WORKDIR ${GOPATH}/src/code.gitea.io/gitea
 RUN if [ -n "${GITEA_VERSION}" ]; then git checkout "${GITEA_VERSION}"; fi \
  && make clean-all build
 
-FROM arm64v8/alpine:3.11@sha256:ad295e950e71627e9d0d14cdc533f4031d42edae31ab57a841c5b9588eacc280
+FROM alpine:3.11
 LABEL maintainer="hackxiu@gmail.com"
 
 EXPOSE 22 3000
