@@ -1,4 +1,4 @@
-FROM arm64v8/alpine:edge@sha256:cfd04e2c9bfed5d883b14329da780888a6a4d1cbc421a0fb1ad076d81bff1d0e
+FROM arm64v8/alpine:edge@sha256:f07e73a2fa046ebb0a3807aba75d6f4094fb45518a3ce0446bf30d436b7ddd63
 
 LABEL maintainer="Hackxiu <hackxiu@gmail.com>" \
   org.label-schema.name="Alpine" \
