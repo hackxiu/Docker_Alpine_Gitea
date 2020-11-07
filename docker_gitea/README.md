@@ -1,122 +1,71 @@
-[简体中文](README_ZH.md)
+<h1> Gitea - Git with a cup of tea</h1>
+当前 Docker 内置 Gitea v1.12.5 版本
 
-<h1> <img src="https://raw.githubusercontent.com/go-gitea/gitea/master/public/img/gitea-192.png" alt="logo" width="30" height="30"> Gitea - Git with a cup of tea</h1>
+## 配置
+使用此docker-compose文件可以快速启动并运行。您应该更改mysql用户名和root密码。安装时，您可以将数据库容器引用为主机db。
+此配置将公开公开端口3000和22。
 
-[![Build Status](https://drone.gitea.io/api/badges/go-gitea/gitea/status.svg)](https://drone.gitea.io/go-gitea/gitea)
-[![Join the Discord chat at https://discord.gg/Gitea](https://img.shields.io/discord/322538954119184384.svg)](https://discord.gg/Gitea)
-[![](https://images.microbadger.com/badges/image/gitea/gitea.svg)](https://microbadger.com/images/gitea/gitea "Get your own image badge on microbadger.com")
-[![codecov](https://codecov.io/gh/go-gitea/gitea/branch/master/graph/badge.svg)](https://codecov.io/gh/go-gitea/gitea)
-[![Go Report Card](https://goreportcard.com/badge/code.gitea.io/gitea)](https://goreportcard.com/report/code.gitea.io/gitea)
-[![GoDoc](https://godoc.org/code.gitea.io/gitea?status.svg)](https://godoc.org/code.gitea.io/gitea)
-[![GitHub release](https://img.shields.io/github/release/go-gitea/gitea.svg)](https://github.com/go-gitea/gitea/releases/latest)
-[![Help Contribute to Open Source](https://www.codetriage.com/go-gitea/gitea/badges/users.svg)](https://www.codetriage.com/go-gitea/gitea)
-[![Become a backer/sponsor of gitea](https://opencollective.com/gitea/tiers/backers/badge.svg?label=backers&color=brightgreen)](https://opencollective.com/gitea)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Crowdin](https://badges.crowdin.net/gitea/localized.svg)](https://crowdin.com/project/gitea)
+挂载目录 /test 到  /data , 数据将存储到 /test
+     
+```
+version: '2'
+services:
+  web:
+    image: gitea/gitea:1.12.4
+    volumes:
+      - ./data:/data
+    ports:
+      - "3000:3000"
+      - "22:22"
+    depends_on:
+      - db
+    restart: always
+  db:
+    image: mariadb:10
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=changeme
+      - MYSQL_DATABASE=gitea
+      - MYSQL_USER=gitea
+      - MYSQL_PASSWORD=changeme
+    volumes:
+      - ./db/:/var/lib/mysql
 
-## Purpose
+```
 
-The goal of this project is to make the easiest, fastest, and most
-painless way of setting up a self-hosted Git service.
-Using Go, this can be done with an independent binary distribution across
-**all platforms** which Go supports, including Linux, macOS, and Windows
-on x86, amd64, ARM and PowerPC architectures.
-Want to try it before doing anything else?
-Do it [with the online demo](https://try.gitea.io/)!
-This project has been
-[forked](https://blog.gitea.io/2016/12/welcome-to-gitea/) from
-[Gogs](https://gogs.io) since 2016.11 but changed a lot.
+      
 
-## Building
+## 目标
 
-From the root of the source tree, run:
+Gitea 的首要目标是创建一个极易安装，运行非常快速，安装和使用体验良好的自建 Git 服务。我们采用 Go 作为后端语言，这使我们只要生成一个可执行程序即可。并且他还支持跨平台，支持 Linux, macOS 和 Windows 以及各种架构，除了 x86，amd64，还包括 ARM 和 PowerPC。
 
-    TAGS="bindata" make build
+如果您想试用一下，请访问 [在线Demo](https://try.gitea.io/)！
 
-or if sqlite support is required:
+## 提示
 
-    TAGS="bindata sqlite sqlite_unlock_notify" make build
+1. **开始贡献代码之前请确保你已经看过了 [贡献者向导（英文）](CONTRIBUTING.md)**.
+2. 所有的安全问题，请私下发送邮件给 **security@gitea.io**。谢谢！
+3. 如果你要使用API，请参见 [API 文档](https://godoc.org/code.gitea.io/sdk/gitea).
 
-The `build` target is split into two sub-targets:
+## 文档
 
-- `make backend` which requires [Go 1.12](https://golang.org/dl/) or greater.
-- `make frontend` which requires [Node.js 10.13](https://nodejs.org/en/download/) or greater.
+关于如何安装请访问我们的 [文档站](https://docs.gitea.io/zh-cn/)，如果没有找到对应的文档，你也可以通过 [Discord - 英文](https://discord.gg/gitea) 和 QQ群 328432459 来和我们交流。
 
-If pre-built frontend files are present it is possible to only build the backend:
+## 贡献流程
 
-		TAGS="bindata" make backend
+Fork -> Patch -> Push -> Pull Request
 
-More info: https://docs.gitea.io/en-us/install-from-source/
-
-## Using
-
-    ./gitea web
-
-NOTE: If you're interested in using our APIs, we have experimental
-support with [documentation](https://try.gitea.io/api/swagger).
-
-## Contributing
-
-Expected workflow is: Fork -> Patch -> Push -> Pull Request
-
-NOTES:
-
-1. **YOU MUST READ THE [CONTRIBUTORS GUIDE](CONTRIBUTING.md) BEFORE STARTING TO WORK ON A PULL REQUEST.**
-2. If you have found a vulnerability in the project, please write privately to **security@gitea.io**. Thanks!
-
-## Further information
-
-For more information and instructions about how to install Gitea, please look
-at our [documentation](https://docs.gitea.io/en-us/). If you have questions
-that are not covered by the documentation, you can get in contact with us on
-our [Discord server](https://discord.gg/Gitea),
-or [forum](https://discourse.gitea.io/)!
-
-## Authors
+## 作者
 
 * [Maintainers](https://github.com/orgs/go-gitea/people)
 * [Contributors](https://github.com/go-gitea/gitea/graphs/contributors)
 * [Translators](options/locale/TRANSLATORS)
 
-## Backers
+## 授权许可
 
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/gitea#backer)]
+本项目采用 MIT 开源授权许可证，完整的授权说明已放置在 [LICENSE](https://github.com/go-gitea/gitea/blob/master/LICENSE) 文件中。
 
-<a href="https://opencollective.com/gitea#backers" target="_blank"><img src="https://opencollective.com/gitea/backers.svg?width=890"></a>
-
-## Sponsors
-
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/gitea#sponsor)]
-
-<a href="https://opencollective.com/gitea/sponsor/0/website" target="_blank"><img src="https://opencollective.com/gitea/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/gitea/sponsor/1/website" target="_blank"><img src="https://opencollective.com/gitea/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/gitea/sponsor/2/website" target="_blank"><img src="https://opencollective.com/gitea/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/gitea/sponsor/3/website" target="_blank"><img src="https://opencollective.com/gitea/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/gitea/sponsor/4/website" target="_blank"><img src="https://opencollective.com/gitea/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/gitea/sponsor/5/website" target="_blank"><img src="https://opencollective.com/gitea/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/gitea/sponsor/6/website" target="_blank"><img src="https://opencollective.com/gitea/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/gitea/sponsor/7/website" target="_blank"><img src="https://opencollective.com/gitea/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/gitea/sponsor/8/website" target="_blank"><img src="https://opencollective.com/gitea/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/gitea/sponsor/9/website" target="_blank"><img src="https://opencollective.com/gitea/sponsor/9/avatar.svg"></a>
-
-## FAQ
-
-**How do you pronounce Gitea?**
-
-Gitea is pronounced [/ɡɪ’ti:/](https://youtu.be/EM71-2uDAoY) as in "gi-tea" with a hard g.
-
-**Why is this not hosted on a Gitea instance?**
-
-We're [working on it](https://github.com/go-gitea/gitea/issues/1029).
-
-## License
-
-This project is licensed under the MIT License.
-See the [LICENSE](https://github.com/go-gitea/gitea/blob/master/LICENSE) file
-for the full license text.
-
-## Screenshots
-Looking for an overview of the interface? Check it out!
+## 截图
 
 |![Dashboard](https://dl.gitea.io/screenshots/home_timeline.png)|![User Profile](https://dl.gitea.io/screenshots/user_profile.png)|![Global Issues](https://dl.gitea.io/screenshots/global_issues.png)|
 |:---:|:---:|:---:|
