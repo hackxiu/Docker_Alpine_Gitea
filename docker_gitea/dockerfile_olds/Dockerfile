@@ -7,7 +7,9 @@ ENV GOPROXY ${GOPROXY:-direct}
 
 ARG GITEA_VERSION=1.12.5
 
-RUN apk --no-cache add build-base git nodejs npm curl tar xz upx && \
+RUN echo http://mirrors.aliyun.com/alpine/v3.11/main/ > /etc/apk/repositories && \
+    echo http://mirrors.aliyun.com/alpine/v3.11/community/ >> /etc/apk/repositories && \
+    apk --no-cache add build-base git nodejs npm curl tar xz upx && \
     rm -rf /var/cache/apk/*
 
 #Setup repo
@@ -22,6 +24,8 @@ LABEL maintainer="hackxiu@gmail.com"
 
 EXPOSE 22 3000
 
+RUN echo http://mirrors.aliyun.com/alpine/v3.11/main/ > /etc/apk/repositories && \
+    echo http://mirrors.aliyun.com/alpine/v3.11/community/ >> /etc/apk/repositories
 RUN apk --no-cache add \
     bash \
     ca-certificates \
