@@ -1,30 +1,31 @@
 ###################################
 #Build stage
-FROM golang:1.14-alpine3.11 AS build-env
+FROM amd64/golang:1.14-alpine3.11 AS build-env
 
 ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
 
 ARG GITEA_VERSION=1.12.5
-ARG TAGS="sqlite sqlite_unlock_notify"
-ENV TAGS "bindata $TAGS"
-ARG CGO_EXTRA_CFLAGS
 
-#Build deps
-RUN apk --no-cache add build-base git nodejs npm
+RUN echo http://mirrors.aliyun.com/alpine/v3.11/main/ > /etc/apk/repositories && \
+    echo http://mirrors.aliyun.com/alpine/v3.11/community/ >> /etc/apk/repositories && \
+    apk --no-cache add build-base git nodejs npm curl tar xz upx && \
+    rm -rf /var/cache/apk/*
 
 #Setup repo
 COPY . ${GOPATH}/src/code.gitea.io/gitea
 WORKDIR ${GOPATH}/src/code.gitea.io/gitea
 
 #Checkout version if set
-RUN make clean-all build
+RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 TAGS="bindata sqlite sqlite_unlock_notify" make clean-all build -ldflags="-w -s"
 
-FROM alpine:3.11
+FROM amd64/alpine:3.12
 LABEL maintainer="hackxiu@gmail.com"
 
 EXPOSE 22 3000
 
+RUN echo http://mirrors.aliyun.com/alpine/v3.11/main/ > /etc/apk/repositories && \
+    echo http://mirrors.aliyun.com/alpine/v3.11/community/ >> /etc/apk/repositories
 RUN apk --no-cache add \
     bash \
     ca-certificates \
@@ -61,4 +62,5 @@ CMD ["/bin/s6-svscan", "/etc/s6"]
 
 COPY docker/root /
 COPY --from=build-env /go/src/code.gitea.io/gitea/gitea /app/gitea/gitea
-RUN ln -s /app/gitea/gitea /usr/local/bin/gitea
+RUN ln -s /app/gitea/gitea /usr/local/bin/gitea && \
+    rm -rf /var/cache/apk/*
