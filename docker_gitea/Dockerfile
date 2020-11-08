@@ -7,7 +7,7 @@ ENV GOPROXY ${GOPROXY:-direct}
 
 ARG GITEA_VERSION=1.12.5
 
-RUN apk --no-cache add build-base git nodejs npm upx && \
+RUN apk --no-cache add build-base git nodejs npm && \
     rm -rf /var/cache/apk/*
 
 #Setup repo
