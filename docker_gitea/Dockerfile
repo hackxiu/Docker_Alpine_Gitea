@@ -7,7 +7,7 @@ ENV GOPROXY ${GOPROXY:-direct}
 
 ARG GITEA_VERSION=1.12.5
 
-RUN apk --no-cache add build-base git nodejs npm curl tar xz upx && \
+RUN apk --no-cache add build-base git nodejs npm upx && \
     rm -rf /var/cache/apk/*
 
 #Setup repo
@@ -17,7 +17,7 @@ WORKDIR ${GOPATH}/src/code.gitea.io/gitea
 #Checkout version if set
 RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 TAGS="bindata sqlite sqlite_unlock_notify" make clean-all build -ldflags="-w -s"
 
-FROM amd64/alpine:3.12
+FROM amd64/alpine:3.11
 LABEL maintainer="hackxiu@gmail.com"
 
 EXPOSE 22 3000
