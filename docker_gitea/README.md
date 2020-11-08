@@ -1,5 +1,7 @@
 <h1> Gitea - Git with a cup of tea</h1>
-当前 Docker 内置 Gitea v1.12.5 版本
+当前 Docker 内置 Gitea v1.12.5 版本,群晖(Synology) Docker,使用。记得挂载虚拟目录
+
+数据可以挂载mysql,配置 挂载目录下的相对目录, xxxxx/Gitea_data/gitea/conf/app.ini
 
 ## 配置
 使用此docker-compose文件可以快速启动并运行。您应该更改mysql用户名和root密码。安装时，您可以将数据库容器引用为主机db。
@@ -64,11 +66,3 @@ Fork -> Patch -> Push -> Pull Request
 ## 授权许可
 
 本项目采用 MIT 开源授权许可证，完整的授权说明已放置在 [LICENSE](https://github.com/go-gitea/gitea/blob/master/LICENSE) 文件中。
-
-## 截图
-
-|![Dashboard](https://dl.gitea.io/screenshots/home_timeline.png)|![User Profile](https://dl.gitea.io/screenshots/user_profile.png)|![Global Issues](https://dl.gitea.io/screenshots/global_issues.png)|
-|:---:|:---:|:---:|
-|![Branches](https://dl.gitea.io/screenshots/branches.png)|![Web Editor](https://dl.gitea.io/screenshots/web_editor.png)|![Activity](https://dl.gitea.io/screenshots/activity.png)|
-|![New Migration](https://dl.gitea.io/screenshots/migration.png)|![Migrating](https://dl.gitea.io/screenshots/migration.gif)|![Pull Request View](https://image.ibb.co/e02dSb/6.png)
-![Pull Request Dark](https://dl.gitea.io/screenshots/pull_requests_dark.png)|![Diff Review Dark](https://dl.gitea.io/screenshots/review_dark.png)|![Diff Dark](https://dl.gitea.io/screenshots/diff_dark.png)|
