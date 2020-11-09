@@ -6,6 +6,9 @@ ARG GOPROXY
 ENV GOPROXY ${GOPROXY:-direct}
 
 ARG GITEA_VERSION=1.12.5
+ARG TAGS="sqlite sqlite_unlock_notify"
+ENV TAGS "bindata $TAGS"
+ARG CGO_EXTRA_CFLAGS
 
 RUN apk --no-cache add build-base git nodejs npm && \
     rm -rf /var/cache/apk/*
